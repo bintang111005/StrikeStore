@@ -1,33 +1,60 @@
 @extends('layouts.app')
 
-@section('title', "Edit: {$product->name}")
+@section('title', "Edit: {$product->name} — StrikeStore Admin")
 @section('meta_description', "Edit produk {$product->name} di StrikeStore.")
 
 @section('content')
-<div class="animate-fade-in">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+    {{-- Breadcrumb --}}
+    <nav class="flex items-center gap-2 text-xs text-slate-400 mb-4" aria-label="Breadcrumb">
+        <a href="{{ route('home') }}" class="hover:text-emerald-400 transition-colors">Home</a>
+        <span>/</span>
+        <a href="{{ route('products.index') }}" class="hover:text-emerald-400 transition-colors">Manajemen Produk</a>
+        <span>/</span>
+        <span class="text-slate-300 font-medium">Edit Produk</span>
+    </nav>
+
     {{-- Page Header --}}
-    <div class="page-header">
+    <div class="flex items-center justify-between pb-6 border-b border-emerald-900/30 mb-8">
         <div>
-            <h1>Edit Produk</h1>
-            <p>Perbarui detail produk <strong>{{ $product->name }}</strong></p>
+            <h1 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+                Edit Produk
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                Perbarui detail inventori <strong class="text-emerald-300">{{ $product->name }}</strong>
+            </p>
         </div>
-        <a href="{{ route('products.index') }}" class="btn btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            Kembali
-        </a>
+        <div class="flex items-center gap-2">
+            <a 
+                href="{{ route('catalog.show', $product->slug) }}" 
+                target="_blank"
+                class="px-3.5 py-2.5 rounded-xl border border-emerald-700/80 bg-[#071C17] hover:bg-emerald-950 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm"
+            >
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>Lihat di Toko</span>
+            </a>
+            <a 
+                href="{{ route('products.index') }}" 
+                class="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all flex items-center gap-2 shadow-sm"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span>Kembali</span>
+            </a>
+        </div>
     </div>
 
     {{-- Validation Errors --}}
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <div>
-                <strong>Terdapat kesalahan:</strong>
-                <ul style="margin-top: 0.5rem; padding-left: 1.25rem; list-style: disc;">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        <div class="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
+            <div class="font-bold mb-1 flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Terdapat Kesalahan Pengisian Formulir:
             </div>
+            <ul class="list-disc pl-5 space-y-0.5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -35,144 +62,249 @@
         @csrf
         @method('PUT')
 
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
-            {{-- Left Column: Main Info --}}
-            <div>
-                <div class="card">
-                    <div class="card-body">
-                        <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--color-text);">
-                            Informasi Produk
-                        </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {{-- Left Column: Main Information (2 cols) --}}
+            <div class="lg:col-span-2 space-y-6">
+                {{-- Box 1: Info Dasar --}}
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+                    <h2 class="font-heading font-bold text-sm text-slate-900 pb-3 border-b border-slate-100 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                        Informasi Utama Produk
+                    </h2>
 
-                        <div class="form-group">
-                            <label class="form-label">Nama Produk <span class="required">*</span></label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}" placeholder="Contoh: Joran Shimano Nexave 180cm" required>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            Nama Produk <span class="text-rose-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            value="{{ old('name', $product->name) }}" 
+                            placeholder="Contoh: Joran Shimano Bassterra EV 180cm" 
+                            required 
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Kategori <span class="required">*</span></label>
-                            <select name="category_id" class="form-control" required>
-                                <option value="">Pilih Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            Kategori Produk <span class="text-rose-500">*</span>
+                        </label>
+                        <select 
+                            name="category_id" 
+                            required 
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                            <option value="">Pilih Kategori...</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Deskripsi</label>
-                            <textarea name="description" class="form-control" rows="4" placeholder="Deskripsikan produk secara detail...">{{ old('description', $product->description) }}</textarea>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            Deskripsi Lengkap
+                        </label>
+                        <textarea 
+                            name="description" 
+                            rows="5" 
+                            placeholder="Jelaskan fitur, material blank carbon, drag rating, dan kegunaan piranti..." 
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >{{ old('description', $product->description) }}</textarea>
                     </div>
                 </div>
 
-                <div class="card" style="margin-top: 1.5rem;">
-                    <div class="card-body">
-                        <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--color-text);">
-                            Harga & Inventori
-                        </h2>
+                {{-- Box 2: Harga & Stok --}}
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+                    <h2 class="font-heading font-bold text-sm text-slate-900 pb-3 border-b border-slate-100 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                        Harga & Inventori
+                    </h2>
 
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">Harga (Rp) <span class="required">*</span></label>
-                                <input type="number" name="price" class="form-control" value="{{ old('price', $product->price) }}" placeholder="0" min="0" step="100" required>
-                            </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Harga Normal (Rp) <span class="text-rose-500">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                name="price" 
+                                value="{{ old('price', $product->price) }}" 
+                                placeholder="850000" 
+                                min="0" 
+                                step="1000" 
+                                required 
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
 
-                            <div class="form-group">
-                                <label class="form-label">Harga Diskon (Rp)</label>
-                                <input type="number" name="discount_price" class="form-control" value="{{ old('discount_price', $product->discount_price) }}" placeholder="Kosongkan jika tidak ada diskon" min="0" step="100">
-                                <span class="form-hint">Harus lebih rendah dari harga normal</span>
-                            </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Harga Diskon Promo (Rp)
+                            </label>
+                            <input 
+                                type="number" 
+                                name="discount_price" 
+                                value="{{ old('discount_price', $product->discount_price) }}" 
+                                placeholder="Kosongkan bila tidak diskon" 
+                                min="0" 
+                                step="1000" 
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                            <p class="text-[11px] text-slate-400 mt-1">Harus lebih rendah dari harga normal.</p>
+                        </div>
 
-                            <div class="form-group">
-                                <label class="form-label">Stok <span class="required">*</span></label>
-                                <input type="number" name="stock" class="form-control" value="{{ old('stock', $product->stock) }}" min="0" required>
-                            </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Jumlah Stok Unit <span class="text-rose-500">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                name="stock" 
+                                value="{{ old('stock', $product->stock) }}" 
+                                min="0" 
+                                required 
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
 
-                            <div class="form-group">
-                                <label class="form-label">SKU</label>
-                                <input type="text" name="sku" class="form-control" value="{{ old('sku', $product->sku) }}" placeholder="Contoh: JRN-SHM-180">
-                                <span class="form-hint">Kode unik untuk identifikasi produk</span>
-                            </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Kode SKU Produk
+                            </label>
+                            <input 
+                                type="text" 
+                                name="sku" 
+                                value="{{ old('sku', $product->sku) }}" 
+                                placeholder="Contoh: JRN-SHM-001" 
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
+                        </div>
 
-                            <div class="form-group">
-                                <label class="form-label">Berat (gram)</label>
-                                <input type="number" name="weight" class="form-control" value="{{ old('weight', $product->weight) }}" placeholder="0" min="0" step="0.01">
-                            </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Berat Paket (gram)
+                            </label>
+                            <input 
+                                type="number" 
+                                name="weight" 
+                                value="{{ old('weight', $product->weight) }}" 
+                                min="0" 
+                                step="1" 
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Right Column: Image & Status --}}
-            <div>
-                <div class="card">
-                    <div class="card-body">
-                        <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--color-text);">
-                            Gambar Produk
-                        </h2>
+            {{-- Right Column: Media, Status, Actions (1 col) --}}
+            <div class="space-y-6">
+                {{-- Box 3: Gambar Produk --}}
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+                    <h2 class="font-heading font-bold text-sm text-slate-900 pb-3 border-b border-slate-100 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                        Gambar Produk
+                    </h2>
 
-                        @if ($product->image)
-                            <div style="margin-bottom: 1rem;">
-                                <p style="font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 0.5rem;">Gambar saat ini:</p>
-                                <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="image-preview" style="display: block;">
-                            </div>
-                        @endif
+                    {{-- Current Image Display --}}
+                    @if ($product->image)
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
+                            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Foto Saat Ini:</p>
+                            <img 
+                                src="{{ Storage::url($product->image) }}" 
+                                alt="{{ $product->name }}" 
+                                class="w-32 h-32 object-cover rounded-xl border border-slate-200 mx-auto shadow-sm"
+                            />
+                        </div>
+                    @endif
 
-                        <div class="form-group">
-                            <div class="file-upload">
-                                <div>
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 0.75rem; color: var(--color-text-muted);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                    <p style="font-size: 0.875rem; color: var(--color-text-muted);">
-                                        <span style="color: var(--color-primary); font-weight: 600;">Ganti gambar</span> atau drag & drop
-                                    </p>
-                                    <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem;">
-                                        PNG, JPG, WEBP (maks. 2MB)
-                                    </p>
+                    <div>
+                        <div class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center cursor-pointer transition-colors bg-slate-50/50 relative">
+                            <input 
+                                type="file" 
+                                name="image" 
+                                accept="image/jpeg,image/png,image/webp" 
+                                onchange="previewImage(this)"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            <div class="space-y-2">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 </div>
-                                <input type="file" name="image" accept="image/jpeg,image/png,image/webp" onchange="previewImage(this)">
+                                <div class="text-xs text-slate-600">
+                                    <span class="text-emerald-700 font-bold">Ganti foto baru</span> atau seret ke sini
+                                </div>
+                                <p class="text-[11px] text-slate-400">PNG, JPG, WEBP (maks. 2MB)</p>
                             </div>
-                            <img id="imagePreview" class="image-preview" style="display:none;">
+                        </div>
+
+                        {{-- New Preview Box --}}
+                        <div id="previewContainer" class="hidden mt-3 text-center">
+                            <img id="imagePreview" class="w-32 h-32 object-cover rounded-xl border border-slate-200 mx-auto shadow-sm" />
+                            <p class="text-[11px] text-emerald-600 mt-1 font-semibold">Preview foto baru terpilih</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="card" style="margin-top: 1.5rem;">
-                    <div class="card-body">
-                        <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--color-text);">
-                            Status & Visibilitas
-                        </h2>
+                {{-- Box 4: Status & Visibilitas --}}
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+                    <h2 class="font-heading font-bold text-sm text-slate-900 pb-3 border-b border-slate-100 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                        Status & Visibilitas
+                    </h2>
 
-                        <div class="form-group">
-                            <label class="form-label">Status <span class="required">*</span></label>
-                            <select name="status" class="form-control" required>
-                                <option value="active" {{ old('status', $product->status) === 'active' ? 'selected' : '' }}>Aktif</option>
-                                <option value="inactive" {{ old('status', $product->status) === 'inactive' ? 'selected' : '' }}>Nonaktif</option>
-                                <option value="out_of_stock" {{ old('status', $product->status) === 'out_of_stock' ? 'selected' : '' }}>Stok Habis</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            Status Produk <span class="text-rose-500">*</span>
+                        </label>
+                        <select 
+                            name="status" 
+                            required 
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                            <option value="active" {{ old('status', $product->status) === 'active' ? 'selected' : '' }}>Aktif (Tampil di Toko)</option>
+                            <option value="inactive" {{ old('status', $product->status) === 'inactive' ? 'selected' : '' }}>Nonaktif (Draft / Sembunyi)</option>
+                            <option value="out_of_stock" {{ old('status', $product->status) === 'out_of_stock' ? 'selected' : '' }}>Stok Habis</option>
+                        </select>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-check">
-                                <input type="hidden" name="is_featured" value="0">
-                                <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
-                                <div>
-                                    <span class="form-label" style="margin-bottom: 0;">Produk Unggulan</span>
-                                    <span class="form-hint" style="display: block;">Tampilkan produk ini di halaman utama</span>
-                                </div>
-                            </label>
-                        </div>
+                    <div class="pt-2 border-t border-slate-100">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="hidden" name="is_featured" value="0">
+                            <input 
+                                type="checkbox" 
+                                name="is_featured" 
+                                value="1" 
+                                {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}
+                                class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer"
+                            />
+                            <div>
+                                <span class="text-xs font-bold text-slate-800">Jadikan Produk Unggulan</span>
+                                <p class="text-[11px] text-slate-400">Tampilkan di slider rekomendasi homepage StrikeStore.</p>
+                            </div>
+                        </label>
                     </div>
                 </div>
 
-                <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        Simpan Perubahan
+                {{-- Buttons --}}
+                <div class="flex items-center gap-3">
+                    <button 
+                        type="submit" 
+                        class="flex-1 py-3 px-4 rounded-xl font-heading font-bold text-xs bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white shadow-lg shadow-emerald-950/20 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Simpan Perubahan</span>
                     </button>
-                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Batal</a>
+                    <a 
+                        href="{{ route('products.index') }}" 
+                        class="py-3 px-5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all text-center"
+                    >
+                        Batal
+                    </a>
                 </div>
             </div>
         </div>
@@ -182,11 +314,12 @@
 <script>
     function previewImage(input) {
         const preview = document.getElementById('imagePreview');
+        const container = document.getElementById('previewContainer');
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
-                preview.style.display = 'block';
+                container.classList.remove('hidden');
             };
             reader.readAsDataURL(input.files[0]);
         }

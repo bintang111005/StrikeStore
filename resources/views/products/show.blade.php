@@ -1,138 +1,196 @@
 @extends('layouts.app')
 
-@section('title', $product->name)
+@section('title', "{$product->name} — StrikeStore Admin")
 @section('meta_description', Str::limit($product->description, 160))
 
 @section('content')
-<div class="animate-fade-in">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+    {{-- Breadcrumb --}}
+    <nav class="flex items-center gap-2 text-xs text-slate-400 mb-4" aria-label="Breadcrumb">
+        <a href="{{ route('home') }}" class="hover:text-emerald-400 transition-colors">Home</a>
+        <span>/</span>
+        <a href="{{ route('products.index') }}" class="hover:text-emerald-400 transition-colors">Manajemen Produk</a>
+        <span>/</span>
+        <span class="text-slate-300 font-medium truncate max-w-xs">{{ $product->name }}</span>
+    </nav>
+
     {{-- Page Header --}}
-    <div class="page-header">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-emerald-900/30 mb-8">
         <div>
-            <h1>{{ $product->name }}</h1>
-            <p>Detail lengkap produk</p>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider mb-2">
+                <span>Detail Inventori Produk</span>
+            </div>
+            <h1 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+                {{ $product->name }}
+            </h1>
         </div>
-        <div class="actions-group">
-            <a href="{{ route('products.edit', $product) }}" class="btn btn-warning">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit
+
+        <div class="flex items-center gap-2 flex-wrap">
+            {{-- Public Catalog View --}}
+            <a 
+                href="{{ route('catalog.show', $product->slug) }}" 
+                target="_blank"
+                class="px-3.5 py-2 rounded-xl border border-emerald-700/80 bg-[#071C17] hover:bg-emerald-950 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
+            >
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>Lihat di Toko</span>
             </a>
-            <form action="{{ route('products.destroy', $product) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+
+            {{-- Edit Button --}}
+            <a 
+                href="{{ route('products.edit', $product) }}" 
+                class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5 shadow-md"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Edit</span>
+            </a>
+
+            {{-- Delete Button --}}
+            <form 
+                action="{{ route('products.destroy', $product) }}" 
+                method="POST" 
+                onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')"
+                class="inline-block"
+            >
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    Hapus
+                <button 
+                    type="submit" 
+                    class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-md cursor-pointer"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <span>Hapus</span>
                 </button>
             </form>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+
+            <a 
+                href="{{ route('products.index') }}" 
+                class="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all"
+            >
                 Kembali
             </a>
         </div>
     </div>
 
-    <div class="detail-grid">
-        {{-- Left: Product Image --}}
-        <div>
-            @if ($product->image)
-                <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="detail-image">
-            @else
-                <div class="detail-image-placeholder">
-                    <div style="text-align: center;">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <p style="margin-top: 0.75rem; font-size: 0.875rem;">Belum ada gambar</p>
+    {{-- Content Grid --}}
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {{-- Left: Image Card (5 cols) --}}
+        <div class="md:col-span-5">
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm text-center">
+                <img 
+                    src="{{ $product->image_url }}" 
+                    alt="{{ $product->name }}" 
+                    class="w-full aspect-square object-cover rounded-xl border border-slate-200 shadow-inner"
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544253331-a87f58b09bf2?auto=format&fit=crop&w=800&q=80';"
+                />
+
+                <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-around text-xs text-slate-500">
+                    <div>
+                        <span class="block font-bold text-slate-800">{{ $product->views_count }}</span>
+                        <span>Total Dilihat</span>
+                    </div>
+                    <div class="border-l border-slate-200 pl-4">
+                        <span class="block font-bold text-slate-800">{{ $product->created_at->format('d/m/Y') }}</span>
+                        <span>Tanggal Input</span>
                     </div>
                 </div>
-            @endif
+            </div>
         </div>
 
-        {{-- Right: Product Details --}}
-        <div>
-            <div class="card" style="margin-bottom: 1.5rem;">
-                <div class="card-body">
-                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                        @if ($product->category)
-                            <span class="badge badge-category">{{ $product->category->name }}</span>
-                        @endif
-                        @switch($product->status)
-                            @case('active')
-                                <span class="badge badge-active">● Aktif</span>
-                                @break
-                            @case('inactive')
-                                <span class="badge badge-inactive">● Nonaktif</span>
-                                @break
-                            @case('out_of_stock')
-                                <span class="badge badge-out-of-stock">● Stok Habis</span>
-                                @break
-                        @endswitch
-                        @if ($product->is_featured)
-                            <span class="badge badge-featured">⭐ Unggulan</span>
-                        @endif
-                    </div>
+        {{-- Right: Product Attributes & Details (7 cols) --}}
+        <div class="md:col-span-7 space-y-6">
+            {{-- Main Attributes Card --}}
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+                <div class="flex items-center gap-2 flex-wrap">
+                    @if ($product->category)
+                        <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                            {{ $product->category->name }}
+                        </span>
+                    @endif
 
-                    {{-- Price --}}
-                    <div style="margin-bottom: 1.5rem;">
-                        @if ($product->discount_price)
-                            <span style="font-size: 1.75rem; font-weight: 800; color: var(--color-primary-light);">
+                    @switch($product->status)
+                        @case('active')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                                Aktif di Toko
+                            </span>
+                            @break
+                        @case('inactive')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                Nonaktif (Draft)
+                            </span>
+                            @break
+                        @case('out_of_stock')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">
+                                Stok Habis
+                            </span>
+                            @break
+                    @endswitch
+
+                    @if ($product->is_featured)
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                            ★ Produk Rekomendasi
+                        </span>
+                    @endif
+                </div>
+
+                {{-- Price Display --}}
+                <div class="py-2">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Harga Jual:</span>
+                    @if ($product->discount_price)
+                        <div class="flex items-baseline gap-3">
+                            <span class="font-heading font-extrabold text-3xl text-emerald-800">
                                 Rp {{ number_format($product->discount_price, 0, ',', '.') }}
                             </span>
-                            <span class="price-original" style="font-size: 1rem; margin-left: 0.5rem;">
+                            <span class="text-sm text-slate-400 line-through">
                                 Rp {{ number_format($product->price, 0, ',', '.') }}
                             </span>
                             @php
-                                $discount = round(($product->price - $product->discount_price) / $product->price * 100);
+                                $pct = round((($product->price - $product->discount_price) / $product->price) * 100);
                             @endphp
-                            <span class="badge" style="background: rgba(239, 68, 68, 0.12); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); margin-left: 0.5rem;">
-                                -{{ $discount }}%
+                            <span class="px-2 py-0.5 rounded-md text-xs font-extrabold bg-rose-100 text-rose-700">
+                                Hemat {{ $pct }}%
                             </span>
-                        @else
-                            <span style="font-size: 1.75rem; font-weight: 800; color: var(--color-primary-light);">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </span>
-                        @endif
-                    </div>
-
-                    {{-- Description --}}
-                    @if ($product->description)
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-size: 0.75rem; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Deskripsi</h3>
-                            <p style="color: var(--color-text); line-height: 1.7; white-space: pre-line;">{{ $product->description }}</p>
+                        </div>
+                    @else
+                        <div class="font-heading font-extrabold text-3xl text-slate-900">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
                         </div>
                     @endif
                 </div>
+
+                {{-- Description --}}
+                @if ($product->description)
+                    <div class="pt-4 border-t border-slate-100">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Deskripsi Produk:</span>
+                        <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            {{ $product->description }}
+                        </p>
+                    </div>
+                @endif
             </div>
 
-            {{-- Info Cards --}}
-            <div class="detail-info-grid">
-                <div class="detail-info-item">
-                    <dt>Stok</dt>
-                    <dd style="font-size: 1.25rem; font-weight: 700; {{ $product->stock <= 5 ? 'color: #f87171;' : '' }}">
+            {{-- Technical Specs Grid --}}
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="p-4 rounded-xl bg-white border border-slate-200/90 shadow-sm">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Sisa Stok</span>
+                    <span class="text-base font-extrabold {{ $product->stock <= 5 ? 'text-rose-600' : 'text-slate-900' }}">
                         {{ $product->stock }} unit
-                    </dd>
+                    </span>
                 </div>
-                @if ($product->sku)
-                    <div class="detail-info-item">
-                        <dt>SKU</dt>
-                        <dd style="font-family: monospace;">{{ $product->sku }}</dd>
-                    </div>
-                @endif
-                @if ($product->weight)
-                    <div class="detail-info-item">
-                        <dt>Berat</dt>
-                        <dd>{{ number_format($product->weight, 0, ',', '.') }} gram</dd>
-                    </div>
-                @endif
-                <div class="detail-info-item">
-                    <dt>Dilihat</dt>
-                    <dd>{{ number_format($product->views_count) }}×</dd>
+
+                <div class="p-4 rounded-xl bg-white border border-slate-200/90 shadow-sm">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">SKU Code</span>
+                    <span class="text-xs font-mono font-bold text-slate-800 truncate block">
+                        {{ $product->sku ?: '—' }}
+                    </span>
                 </div>
-                <div class="detail-info-item">
-                    <dt>Dibuat</dt>
-                    <dd>{{ $product->created_at->format('d M Y') }}</dd>
-                </div>
-                <div class="detail-info-item">
-                    <dt>Diperbarui</dt>
-                    <dd>{{ $product->updated_at->format('d M Y') }}</dd>
+
+                <div class="p-4 rounded-xl bg-white border border-slate-200/90 shadow-sm">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Berat Paket</span>
+                    <span class="text-base font-extrabold text-slate-900">
+                        {{ $product->weight ? number_format($product->weight, 0, ',', '.') . ' g' : '—' }}
+                    </span>
                 </div>
             </div>
         </div>
