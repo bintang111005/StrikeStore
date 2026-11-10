@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('invoice_number')->unique();
             $table->decimal('subtotal', 14, 2);
             $table->decimal('shipping_cost', 12, 2)->default(0);
@@ -48,6 +48,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained('products')->restrictOnDelete();
             $table->string('product_name');
+            $table->string('variant', 100)->nullable();
             $table->decimal('price', 12, 2);
             $table->integer('quantity');
             $table->decimal('subtotal', 14, 2);

@@ -61,12 +61,12 @@ class CatalogController extends Controller
         // Sorting
         $sort = $request->input('sort', 'latest');
         match ($sort) {
-            'price_asc' => $query->orderByRaw('COALESCE(discount_price, price) ASC'),
-            'price_desc' => $query->orderByRaw('COALESCE(discount_price, price) DESC'),
+            'price_asc' => $query->orderByRaw('CASE WHEN discount_price IS NOT NULL AND discount_price > 0 THEN discount_price ELSE price END ASC')->orderBy('id', 'asc'),
+            'price_desc' => $query->orderByRaw('CASE WHEN discount_price IS NOT NULL AND discount_price > 0 THEN discount_price ELSE price END DESC')->orderBy('id', 'desc'),
             'name_asc' => $query->orderBy('name', 'asc'),
             'name_desc' => $query->orderBy('name', 'desc'),
-            'popular' => $query->orderByDesc('views_count'),
-            default => $query->latest(),
+            'popular' => $query->orderByDesc('views_count')->orderByDesc('is_featured')->orderByDesc('id'),
+            default => $query->orderByDesc('created_at')->orderByDesc('id'),
         };
 
         $products = $query->paginate(12)->withQueryString();
@@ -133,10 +133,12 @@ class CatalogController extends Controller
         // Sorting
         $sort = $request->input('sort', 'latest');
         match ($sort) {
-            'price_asc' => $query->orderByRaw('COALESCE(discount_price, price) ASC'),
-            'price_desc' => $query->orderByRaw('COALESCE(discount_price, price) DESC'),
+            'price_asc' => $query->orderByRaw('CASE WHEN discount_price IS NOT NULL AND discount_price > 0 THEN discount_price ELSE price END ASC')->orderBy('id', 'asc'),
+            'price_desc' => $query->orderByRaw('CASE WHEN discount_price IS NOT NULL AND discount_price > 0 THEN discount_price ELSE price END DESC')->orderBy('id', 'desc'),
             'name_asc' => $query->orderBy('name', 'asc'),
-            default => $query->latest(),
+            'name_desc' => $query->orderBy('name', 'desc'),
+            'popular' => $query->orderByDesc('views_count')->orderByDesc('is_featured')->orderByDesc('id'),
+            default => $query->orderByDesc('created_at')->orderByDesc('id'),
         };
 
         $products = $query->paginate(12)->withQueryString();

@@ -47,9 +47,9 @@ class Category extends Model
     }
 
     /**
-     * Get category image URL with curated fishing photography fallback.
+     * Get uploaded category image URL, or null if no photo has been uploaded.
      */
-    public function getImageUrlAttribute(): string
+    public function getImageUrlAttribute(): ?string
     {
         if (! empty($this->image)) {
             if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://') || str_starts_with($this->image, '/')) {
@@ -59,14 +59,6 @@ class Category extends Model
             return asset('storage/'.$this->image);
         }
 
-        $photoMap = [
-            'joran' => 'https://images.unsplash.com/photo-1544253331-a87f58b09bf2?auto=format&fit=crop&w=800&q=80',
-            'reel' => 'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=800&q=80',
-            'umpan' => 'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=800&q=80',
-            'senar' => 'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=800&q=80',
-            'kail-aksesori' => 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
-        ];
-
-        return $photoMap[$this->slug] ?? 'https://images.unsplash.com/photo-1544253331-a87f58b09bf2?auto=format&fit=crop&w=800&q=80';
+        return null;
     }
 }

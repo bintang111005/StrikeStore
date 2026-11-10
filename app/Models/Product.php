@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
     'category_id', 'name', 'slug', 'description', 'price', 'discount_price',
-    'stock', 'sku', 'weight', 'image', 'gallery', 'status', 'is_featured',
+    'stock', 'sku', 'weight', 'image', 'gallery', 'status', 'is_featured', 'views_count',
 ])]
 class Product extends Model
 {
@@ -76,7 +76,7 @@ class Product extends Model
             }
         }
 
-        return 'StrikeStore Pro';
+        return 'StrikeStore';
     }
 
     /**
@@ -98,9 +98,9 @@ class Product extends Model
     }
 
     /**
-     * Get curated image URL with fallback based on product category & type.
+     * Get uploaded image URL, or null if no photo has been uploaded by the user.
      */
-    public function getImageUrlAttribute(): string
+    public function getImageUrlAttribute(): ?string
     {
         if (! empty($this->image)) {
             if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://') || str_starts_with($this->image, '/')) {
@@ -110,44 +110,11 @@ class Product extends Model
             return asset('storage/'.$this->image);
         }
 
-        $categorySlug = $this->category?->slug ?? '';
-
-        // Curated authentic photography for fishing items
-        $photoMap = [
-            'joran' => [
-                'https://images.unsplash.com/photo-1544253331-a87f58b09bf2?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=800&q=80',
-            ],
-            'reel' => [
-                'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
-            ],
-            'umpan' => [
-                'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-            ],
-            'senar' => [
-                'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80',
-            ],
-            'kail-aksesori' => [
-                'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-            ],
-        ];
-
-        $pool = $photoMap[$categorySlug] ?? $photoMap['joran'];
-
-        return $pool[$this->id % count($pool)];
+        return null;
     }
 
     /**
-     * Get image gallery for detail page.
+     * Get image gallery for detail page (only uploaded images, empty if none).
      */
     public function getGalleryListAttribute(): array
     {
@@ -155,37 +122,10 @@ class Product extends Model
             return $this->gallery;
         }
 
-        $main = $this->image_url;
-        $categorySlug = $this->category?->slug ?? '';
+        if ($this->image_url) {
+            return [$this->image_url];
+        }
 
-        $altPhotos = [
-            'joran' => [
-                'https://images.unsplash.com/photo-1544253331-a87f58b09bf2?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=1000&q=80',
-            ],
-            'reel' => [
-                'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=80',
-            ],
-            'umpan' => [
-                'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80',
-            ],
-            'senar' => [
-                'https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1000&q=80',
-            ],
-            'kail-aksesori' => [
-                'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&w=1000&q=80',
-                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80',
-            ],
-        ];
-
-        return array_unique(array_merge([$main], $altPhotos[$categorySlug] ?? [$main]));
+        return [];
     }
 }

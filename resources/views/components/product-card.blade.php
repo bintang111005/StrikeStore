@@ -7,141 +7,102 @@
     $isOutOfStock = $product->status === 'out_of_stock' || $product->stock <= 0;
 @endphp
 
-<div class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-500/40 product-card-hover overflow-hidden transition-all duration-300">
+<div class="group flex flex-col h-full bg-white rounded-2xl border border-slate-200 hover:border-emerald-500/60 shadow-xs hover:shadow-md overflow-hidden transition-all">
     {{-- Card Media / Image Container --}}
-    <div class="relative w-full aspect-[4/3] bg-gradient-to-b from-slate-100 to-slate-50 overflow-hidden flex items-center justify-center p-4">
-        {{-- Product Image --}}
-        <a href="{{ route('catalog.show', $product->slug) }}" class="w-full h-full flex items-center justify-center">
+    <a href="{{ route('catalog.show', $product->slug) }}" class="relative w-full aspect-[4/3] bg-slate-50 border-b border-slate-100 overflow-hidden flex items-center justify-center">
+        @if ($product->image_url)
             <img 
                 src="{{ $product->image_url }}" 
                 alt="{{ $product->name }}" 
                 loading="lazy"
-                class="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
-                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544253331-a87f58b09bf2?auto=format&fit=crop&w=600&q=80';"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-        </a>
+        @else
+            <div class="flex flex-col items-center justify-center text-slate-300 p-4 text-center select-none">
+                <svg class="w-10 h-10 mb-1.5 stroke-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-[11px] font-medium text-slate-400">Belum ada foto</span>
+            </div>
+        @endif
 
-        {{-- Badges Container (Top Left) --}}
-        <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+        {{-- Badges (Top Left) --}}
+        <div class="absolute top-2.5 left-2.5 flex flex-wrap gap-1 z-10 pointer-events-none">
             @if ($hasDiscount)
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-600 text-white shadow-sm shadow-rose-900/30">
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-600 text-white">
                     -{{ $discountPercent }}%
                 </span>
             @endif
-
             @if ($product->is_featured)
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-sm shadow-amber-900/20">
-                    <svg class="w-3 h-3 fill-current text-white" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                    </svg>
-                    Top Pick
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500 text-white">
+                    Unggulan
                 </span>
             @endif
         </div>
 
         {{-- Stock Badge (Top Right) --}}
-        <div class="absolute top-3 right-3 z-10 pointer-events-none">
-            @if ($isOutOfStock)
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-900/80 backdrop-blur-sm text-slate-200">
-                    Stok Habis
+        @if ($isOutOfStock)
+            <div class="absolute top-2.5 right-2.5 z-10 pointer-events-none">
+                <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-800 text-white">
+                    Habis
                 </span>
-            @elseif ($product->stock <= 5)
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/90 text-white shadow-xs">
-                    Sisa {{ $product->stock }}
-                </span>
-            @endif
-        </div>
+            </div>
+        @endif
+    </a>
 
-        {{-- Quick view overlay button --}}
-        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden sm:flex justify-center z-10">
-            <a href="{{ route('catalog.show', $product->slug) }}" class="w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-slate-900/90 backdrop-blur-md text-white hover:bg-emerald-700 transition-colors shadow-lg">
-                Lihat Detail Spesifikasi
-            </a>
-        </div>
-    </div>
-
-    {{-- Card Details --}}
-    <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between">
+    {{-- Card Body --}}
+    <div class="p-4 flex flex-col flex-grow justify-between gap-3">
         <div>
-            {{-- Category & Brand --}}
-            <div class="flex items-center justify-between gap-2 text-xs text-slate-500 mb-1.5">
-                <span class="font-medium text-emerald-700 uppercase tracking-wider text-[11px]">
-                    {{ $product->category?->name ?? 'Fishing Gear' }}
+            <div class="flex items-center justify-between gap-2 text-[11px] mb-1">
+                <span class="font-semibold text-emerald-700 truncate">
+                    {{ $product->category?->name ?? 'Peralatan Pancing' }}
                 </span>
-                <span class="font-semibold text-slate-600 truncate max-w-[100px]">
-                    {{ $product->brand }}
+                <span class="text-slate-400 shrink-0" title="Total dilihat">
+                    {{ $product->views_count ?? 0 }}x dilihat
                 </span>
             </div>
 
-            {{-- Title --}}
-            <h3 class="font-heading font-semibold text-sm sm:text-base text-slate-900 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors mb-2">
+            <h3 class="font-heading font-bold text-sm text-slate-900 line-clamp-2 leading-snug group-hover:text-emerald-700 transition-colors">
                 <a href="{{ route('catalog.show', $product->slug) }}">
                     {{ $product->name }}
                 </a>
             </h3>
-
-            {{-- Rating & Reviews --}}
-            <div class="flex items-center gap-1.5 mb-3">
-                <div class="flex items-center text-amber-400 text-xs">
-                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                    </svg>
-                </div>
-                <span class="text-xs font-semibold text-slate-700">{{ $product->rating_score }}</span>
-                <span class="text-[11px] text-slate-400">({{ $product->review_count }})</span>
-            </div>
         </div>
 
-        {{-- Price & Add to Cart Action --}}
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+        {{-- Price & Add to Cart --}}
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
             <div>
-                <div class="flex items-baseline gap-1.5 flex-wrap">
-                    <span class="text-base sm:text-lg font-bold font-heading text-emerald-900">
-                        Rp {{ number_format($effectivePrice, 0, ',', '.') }}
-                    </span>
-                    @if ($hasDiscount)
-                        <span class="text-xs text-slate-400 line-through">
-                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </span>
-                    @endif
+                <div class="text-base font-bold font-heading text-slate-900">
+                    Rp {{ number_format($effectivePrice, 0, ',', '.') }}
                 </div>
-                <span class="text-[10px] text-slate-400 block mt-0.5">
-                    @if(!$isOutOfStock)
-                        Ready stock: {{ $product->stock }} unit
-                    @else
-                        Stok sementara kosong
-                    @endif
-                </span>
-            </div>
-
-            {{-- Cart Button --}}
-            <div>
-                @if ($isOutOfStock)
-                    <button 
-                        type="button" 
-                        disabled 
-                        class="p-2.5 rounded-xl bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
-                        title="Stok Habis"
-                        aria-label="Stok Habis"
-                    >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
-                        </svg>
-                    </button>
+                @if ($hasDiscount)
+                    <div class="text-[11px] text-slate-400 line-through">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </div>
                 @else
-                    <button 
-                        type="button"
-                        onclick="addToCart({{ $product->id }}, 1, this)"
-                        class="relative p-2.5 rounded-xl bg-[#064E3B] text-white hover:bg-emerald-600 active:scale-95 transition-all shadow-md shadow-emerald-950/20 hover:shadow-emerald-500/25 border border-emerald-500/30 flex items-center justify-center group/btn cursor-pointer"
-                        title="Tambah ke Keranjang"
-                        aria-label="Tambah {{ $product->name }} ke keranjang"
-                    >
-                        <svg class="w-5 h-5 transition-transform group-hover/btn:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                    </button>
+                    <div class="text-[11px] text-slate-400">
+                        Stok: {{ $product->stock }}
+                    </div>
                 @endif
             </div>
+
+            @if ($isOutOfStock)
+                <span class="px-3 py-2 rounded-xl bg-slate-100 text-slate-400 text-xs font-semibold">
+                    Habis
+                </span>
+            @else
+                <button 
+                    type="button"
+                    onclick="addToCart({{ $product->id }}, 1, this)"
+                    class="px-3.5 py-2 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+                    title="Tambah ke Keranjang"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Keranjang</span>
+                </button>
+            @endif
         </div>
     </div>
 </div>

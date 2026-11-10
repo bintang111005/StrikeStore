@@ -47,31 +47,7 @@
 </head>
 <body class="font-sans bg-[#F8FAFC] text-slate-800 antialiased flex flex-col min-h-screen selection:bg-emerald-500 selection:text-white">
 
-    {{-- 1. ANNOUNCEMENT BAR --}}
-    <div class="bg-gradient-to-r from-[#022C22] via-[#064E3B] to-[#022C22] text-emerald-100 text-xs py-2 px-4 border-b border-emerald-900/40 select-none">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <div class="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                </span>
-                <span class="font-medium tracking-wide">
-                    <strong>GEAR UP FOR YOUR NEXT BIG CATCH</strong> — Gratis Ongkir ke Seluruh Indonesia min. belanja Rp 500.000!
-                </span>
-            </div>
-            <div class="hidden md:flex items-center gap-6 text-emerald-200 text-xs shrink-0">
-                <span class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    100% Produk Original & Bergaransi
-                </span>
-                <span class="flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                    Kemasan Pipa PVC Khusus Joran
-                </span>
-            </div>
-        </div>
-    </div>
-
-    {{-- 2. STICKY NAVBAR --}}
+    {{-- STICKY NAVBAR --}}
     <header class="sticky top-0 z-40 bg-[#022C22]/95 backdrop-blur-md border-b border-emerald-900/60 shadow-lg shadow-emerald-950/20 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20 gap-4">
@@ -156,6 +132,9 @@
 
                     <a href="{{ route('catalog.index', ['sort' => 'popular']) }}" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-200 hover:text-white hover:bg-white/5 transition-all">
                         Produk Unggulan
+                    </a>
+                    <a href="{{ route('cart.page') }}" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('cart.page') || request()->routeIs('checkout.*') ? 'text-emerald-400 bg-emerald-900/40 border border-emerald-500/30' : 'text-slate-200 hover:text-white hover:bg-white/5' }}">
+                        Keranjang & Checkout
                     </a>
                 </nav>
 
@@ -245,25 +224,6 @@
                             <span class="hidden sm:inline">Masuk</span>
                         </a>
                     @endauth
-
-                    {{-- Cart Button with Dynamic Badge --}}
-                    <button 
-                        type="button" 
-                        onclick="openCartDrawer()"
-                        class="relative flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white border border-emerald-400/30 shadow-md shadow-emerald-950/40 transition-all active:scale-95 group cursor-pointer"
-                        aria-label="Lihat Keranjang Belanja"
-                    >
-                        <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        <span class="hidden sm:inline font-semibold text-xs tracking-wide">Keranjang</span>
-                        <span 
-                            id="cartCountBadge" 
-                            class="px-2 py-0.5 rounded-full text-xs font-extrabold bg-amber-400 text-slate-950 shadow-sm"
-                        >
-                            {{ array_sum(array_column(session('cart', []), 'quantity')) }}
-                        </span>
-                    </button>
 
                     {{-- Mobile Menu Hamburger --}}
                     <button 
@@ -395,7 +355,7 @@
 
         <div class="pt-6 border-t border-emerald-900/60 text-xs text-slate-400">
             <p class="font-medium text-slate-300">Konsultasi Alat Pancing:</p>
-            <p class="mt-1">WhatsApp CS: <a href="https://wa.me/6281234567890" target="_blank" class="text-emerald-400 font-bold underline">+62 812-3456-7890</a></p>
+            <p class="mt-1">WhatsApp Admin: <a href="https://wa.me/6285263785531" target="_blank" class="text-emerald-400 font-bold underline">0852-6378-5531</a></p>
         </div>
     </div>
 
@@ -457,19 +417,24 @@
                 <span class="font-heading font-extrabold text-xl text-emerald-900" id="cartDrawerSubtotal">Rp 0</span>
             </div>
             <div class="flex flex-col gap-2.5">
-                <button 
-                    type="button" 
+                <a 
+                    href="{{ route('checkout.index') }}"
                     id="cartCheckoutBtn"
-                    onclick="proceedToCheckout()"
                     class="w-full py-3.5 px-4 rounded-xl font-heading font-bold text-sm bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white shadow-lg shadow-emerald-950/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                    <span>Lanjut ke Pembayaran</span>
+                    <span>Checkout & Isi Data Pemesanan</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </button>
+                </a>
+                <a 
+                    href="{{ route('cart.page') }}"
+                    class="w-full py-2.5 px-4 rounded-xl font-heading font-bold text-xs bg-white border border-slate-300 hover:border-emerald-600 text-slate-800 hover:text-emerald-800 text-center transition-all"
+                >
+                    Lihat Halaman Keranjang & Pilih Produk
+                </a>
                 <button 
                     type="button" 
                     onclick="closeCartDrawer()" 
-                    class="w-full py-2.5 text-center text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"
+                    class="w-full py-1.5 text-center text-xs font-semibold text-slate-500 hover:text-slate-900 cursor-pointer"
                 >
                     ← Lanjut Pilih Produk Lain
                 </button>
@@ -726,7 +691,7 @@
                         </li>
                         <li class="flex items-center gap-2.5">
                             <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                            <span>WhatsApp: <strong class="text-white">+62 812-3456-7890</strong></span>
+                            <span>WhatsApp Admin: <a href="https://wa.me/6285263785531" target="_blank" class="text-white font-bold hover:text-emerald-300">0852-6378-5531</a></span>
                         </li>
                         <li class="flex items-center gap-2.5">
                             <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -902,7 +867,7 @@
             closeCheckoutModal();
 
             setTimeout(() => {
-                window.open(`https://wa.me/6281234567890?text=${waMessage}`, '_blank');
+                window.open(`https://wa.me/6285263785531?text=${waMessage}`, '_blank');
             }, 600);
         }
 
@@ -954,7 +919,6 @@
                         setTimeout(() => badge.classList.remove('scale-125'), 200);
                     }
                     showToast('Berhasil Ditambahkan! 🎣', data.message);
-                    openCartDrawer();
                 } else {
                     showToast('Pemberitahuan', data.message || 'Gagal menambahkan produk.');
                 }
@@ -1026,10 +990,13 @@
             data.items.forEach(item => {
                 const itemTotal = (item.price * item.quantity).toLocaleString('id-ID');
                 const variantBadge = item.variant ? `<div class="inline-block text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md mt-1">Varian: ${item.variant}</div>` : '';
+                const imgHtml = item.image
+                    ? `<img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl bg-white shrink-0 border border-slate-200" />`
+                    : `<div class="w-16 h-16 rounded-xl bg-slate-100 shrink-0 border border-dashed border-slate-200 flex items-center justify-center text-slate-400 text-[10px]">Tanpa Foto</div>`;
 
                 html += `
                     <div class="flex gap-3.5 p-3 rounded-2xl bg-slate-50 border border-slate-200/90 items-center justify-between">
-                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl bg-white shrink-0 border border-slate-200" />
+                        ${imgHtml}
                         <div class="flex-1 min-w-0">
                             <h4 class="text-xs font-bold text-slate-900 truncate">${item.name}</h4>
                             <p class="text-[11px] text-slate-400 font-mono mt-0.5">SKU: ${item.sku || '-'}</p>
@@ -1098,7 +1065,7 @@
 
         // Proceed to Checkout
         function proceedToCheckout() {
-            openCheckoutModal();
+            window.location.href = '{{ route("checkout.index") }}';
         }
     </script>
 

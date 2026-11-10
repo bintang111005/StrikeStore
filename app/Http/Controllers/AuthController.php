@@ -70,6 +70,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:20'],
+            'address' => ['nullable', 'string', 'max:1000'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
@@ -77,6 +78,7 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
+            'address' => $validated['address'] ?? null,
             'password' => Hash::make($validated['password']),
             'role' => 'customer',
         ]);
@@ -84,7 +86,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('home')->with('success', 'Pendaftaran berhasil! Selamat bergabung di StrikeStore Angler Club.');
+        return redirect()->intended(route('home'))->with('success', 'Akun berhasil dibuat! Selamat berbelanja di StrikeStore.');
     }
 
     /**

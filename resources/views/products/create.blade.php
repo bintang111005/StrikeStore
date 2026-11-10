@@ -6,21 +6,21 @@
 @section('content')
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
     {{-- Breadcrumb --}}
-    <nav class="flex items-center gap-2 text-xs text-slate-400 mb-4" aria-label="Breadcrumb">
-        <a href="{{ route('home') }}" class="hover:text-emerald-400 transition-colors">Home</a>
+    <nav class="flex items-center gap-2 text-xs text-slate-500 mb-4" aria-label="Breadcrumb">
+        <a href="{{ route('home') }}" class="hover:text-emerald-700 transition-colors">Home</a>
         <span>/</span>
-        <a href="{{ route('products.index') }}" class="hover:text-emerald-400 transition-colors">Manajemen Produk</a>
+        <a href="{{ route('products.index') }}" class="hover:text-emerald-700 transition-colors">Manajemen Produk</a>
         <span>/</span>
-        <span class="text-slate-300 font-medium">Tambah Produk</span>
+        <span class="text-slate-800 font-bold">Tambah Produk</span>
     </nav>
 
     {{-- Page Header --}}
-    <div class="flex items-center justify-between pb-6 border-b border-emerald-900/30 mb-8">
+    <div class="flex items-center justify-between pb-6 border-b border-slate-200 mb-8">
         <div>
-            <h1 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+            <h1 class="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
                 Tambah Produk Baru
             </h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Isi spesifikasi lengkap piranti pancing untuk ditambahkan ke katalog toko.
             </p>
         </div>

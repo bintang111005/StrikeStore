@@ -2,38 +2,34 @@
 
 <a 
     href="{{ route('catalog.category', $category->slug) }}" 
-    class="group relative flex flex-col justify-end p-6 rounded-2xl overflow-hidden aspect-[4/5] sm:aspect-[3/4] bg-slate-900 border border-slate-700/50 shadow-md hover:shadow-2xl hover:border-emerald-500/50 transition-all duration-300 product-card-hover"
+    class="group flex flex-col justify-between p-5 rounded-2xl bg-white border border-slate-200 hover:border-emerald-500 shadow-xs hover:shadow-md transition-all"
 >
-    {{-- Background Image with cinematic dark gradient --}}
-    <img 
-        src="{{ $category->image_url }}" 
-        alt="{{ $category->name }}" 
-        loading="lazy"
-        class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110 opacity-75 group-hover:opacity-85"
-    />
+    @if ($category->image_url)
+        <div class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-slate-50 border border-slate-100 mb-4">
+            <img 
+                src="{{ $category->image_url }}" 
+                alt="{{ $category->name }}" 
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+        </div>
+    @endif
 
-    {{-- Dark Gradient Overlays for high contrast --}}
-    <div class="absolute inset-0 bg-gradient-to-t from-[#022C22] via-[#064E3B]/60 to-transparent"></div>
-    <div class="absolute inset-0 bg-radial from-transparent via-transparent to-black/40"></div>
-
-    {{-- Category Content --}}
-    <div class="relative z-10 flex flex-col">
-        {{-- Item Count Tag --}}
-        <div class="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/30 mb-2.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>{{ $category->products_count ?? $category->products->count() }} Produk</span>
+    <div>
+        <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                {{ $category->products_count ?? $category->products->count() }} Produk
+            </span>
+            <svg class="w-4 h-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
         </div>
 
-        {{-- Category Name --}}
-        <h3 class="font-heading text-xl sm:text-2xl font-bold text-white group-hover:text-emerald-300 transition-colors drop-shadow-sm flex items-center justify-between">
-            <span>{{ $category->name }}</span>
-            <svg class="w-5 h-5 text-emerald-400 transform translate-x-0 group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
+        <h3 class="font-heading text-base sm:text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+            {{ $category->name }}
         </h3>
 
-        {{-- Description --}}
-        <p class="text-xs sm:text-sm text-slate-300 mt-1.5 line-clamp-2 leading-relaxed opacity-90">
+        <p class="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
             {{ $category->description }}
         </p>
     </div>
