@@ -271,8 +271,83 @@ class CheckoutController extends Controller
         array_unshift($recentOrders, $order->invoice_number);
         $request->session()->put('recent_orders', array_values(array_unique(array_slice($recentOrders, 0, 10))));
 
+        return redirect()->route('checkout.payment', $order->invoice_number)
+            ->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan proses pembayaran untuk menyelesaikan transaksi.');
+    }
+
+    /**
+     * Display the online payment page to complete the transaction.
+     */
+    public function payment(string $invoiceNumber): View
+    {
+        $order = Order::with(['items.product', 'transaction'])
+            ->where('invoice_number', $invoiceNumber)
+            ->firstOrFail();
+
+        $paymentMethodKey = $order->transaction?->payment_method ?? 'bank_transfer';
+        $paymentInfo = self::PAYMENT_METHODS[$paymentMethodKey] ?? self::PAYMENT_METHODS['bank_transfer'];
+        $paymentMethods = self::PAYMENT_METHODS;
+
+        return view('checkout.payment', compact('order', 'paymentInfo', 'paymentMethodKey', 'paymentMethods'));
+    }
+
+    /**
+     * Process online payment confirmation & mark transaction as paid.
+     */
+    public function processPayment(Request $request, string $invoiceNumber): RedirectResponse
+    {
+        $order = Order::with('transaction')
+            ->where('invoice_number', $invoiceNumber)
+            ->firstOrFail();
+
+        $validated = $request->validate([
+            'payment_method' => ['required', 'in:bank_transfer,qris,e_wallet,cod,credit_card'],
+            'payer_name' => ['nullable', 'string', 'max:255'],
+            'payment_proof' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+        ], [
+            'payment_method.required' => 'Silakan pilih metode pembayaran.',
+            'payment_proof.image' => 'File bukti pembayaran harus berupa gambar (JPG, PNG, WEBP).',
+            'payment_proof.max' => 'Ukuran foto bukti pembayaran maksimal 2MB.',
+        ]);
+
+        $proofPath = $order->transaction?->payment_proof;
+        if ($request->hasFile('payment_proof')) {
+            $proofPath = $request->file('payment_proof')->store('payments', 'public');
+        }
+
+        $paymentConfig = self::PAYMENT_METHODS[$validated['payment_method']] ?? self::PAYMENT_METHODS['bank_transfer'];
+        $payerInfo = ! empty($validated['payer_name']) ? ' | Pengirim: '.$validated['payer_name'] : '';
+
+        DB::transaction(function () use ($order, $validated, $proofPath, $paymentConfig, $payerInfo) {
+            if ($order->transaction) {
+                $order->transaction->update([
+                    'payment_method' => $validated['payment_method'],
+                    'status' => 'paid',
+                    'payment_proof' => $proofPath,
+                    'payment_details' => $paymentConfig['instructions'].$payerInfo,
+                    'paid_at' => now(),
+                ]);
+            } else {
+                Transaction::create([
+                    'order_id' => $order->id,
+                    'user_id' => $order->user_id,
+                    'transaction_code' => 'TRX-'.now()->format('Ymd').'-'.strtoupper(Str::random(6)),
+                    'amount' => $order->total,
+                    'payment_method' => $validated['payment_method'],
+                    'status' => 'paid',
+                    'payment_proof' => $proofPath,
+                    'payment_details' => $paymentConfig['instructions'].$payerInfo,
+                    'paid_at' => now(),
+                ]);
+            }
+
+            $order->update([
+                'status' => 'confirmed',
+            ]);
+        });
+
         return redirect()->route('checkout.success', $order->invoice_number)
-            ->with('success', 'Pesanan Anda berhasil dibuat! Silakan selesaikan pembayaran sesuai instruksi di bawah.');
+            ->with('success', 'Pembayaran berhasil dikonfirmasi! Transaksi pembelian Anda telah selesai (LUNAS).');
     }
 
     /**
@@ -288,5 +363,18 @@ class CheckoutController extends Controller
         $paymentInfo = self::PAYMENT_METHODS[$paymentMethodKey] ?? self::PAYMENT_METHODS['bank_transfer'];
 
         return view('checkout.success', compact('order', 'paymentInfo'));
+    }
+
+    /**
+     * Display the logged-in user's order and payment history.
+     */
+    public function myOrders(): View
+    {
+        $orders = Order::with(['items.product', 'transaction'])
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('checkout.orders', compact('orders'));
     }
 }

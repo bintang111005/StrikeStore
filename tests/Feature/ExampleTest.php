@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -480,10 +481,34 @@ class ExampleTest extends TestCase
         $this->assertDatabaseHas('transactions', [
             'payment_method' => 'qris',
             'amount' => 550000,
+            'status' => 'pending',
         ]);
 
         // Verify product stock was decremented
         $this->assertEquals(4, $product->fresh()->stock);
+
+        // Step 3: Complete online payment process
+        $order = Order::first();
+        $paymentPage = $this->get('/pembayaran/'.$order->invoice_number);
+        $paymentPage->assertStatus(200);
+        $paymentPage->assertSee('Proses Pembayaran Online');
+
+        $payResponse = $this->post('/pembayaran/'.$order->invoice_number, [
+            'payment_method' => 'qris',
+            'payer_name' => 'Bintang Pratama',
+        ]);
+
+        $payResponse->assertRedirect('/checkout/success/'.$order->invoice_number);
+
+        $this->assertDatabaseHas('transactions', [
+            'order_id' => $order->id,
+            'status' => 'paid',
+        ]);
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'status' => 'confirmed',
+        ]);
     }
 
     /**

@@ -15,8 +15,10 @@ Dokumen ini menjelaskan struktur folder, lokasi file kodingan per halaman, serta
 4. **Isi Data Pemesanan / Checkout (`/checkout`)**  
    - **Username / Nama Pemesan** otomatis terisi dari akun yang sedang login (`Auth::user()->name`) dan dikunci (`readonly`).
    - Pengguna cukup mengisi/mengubah **Nomor HP / WhatsApp** dan **Alamat Lengkap Pengiriman**, memilih **Kurir Ekspedisi**, memilih **Metode Pembayaran**, serta memasukkan **Kode Voucher** (opsional).
-5. **Simpan Pesanan & Tampilkan Invoice (`/checkout/success/{invoiceNumber}`)**  
-   Saat tombol **Buat Pesanan Sekarang** ditekan, `CheckoutController@store` menyimpan data ke 3 tabel database (`orders`, `order_items`, `transactions`), mengurangi stok produk secara otomatis, menghapus item yang sudah dibeli dari keranjang, lalu menampilkan halaman **Invoice Resmi** yang bisa dicetak atau dikonfirmasi langsung ke WhatsApp Admin (`0852-6378-5531`).
+5. **Proses Pembayaran Online (`/pembayaran/{invoiceNumber}`)**  
+   Setelah menekan **Buat Pesanan Sekarang**, pengguna diarahkan ke halaman Pembayaran Online yang menampilkan nomor Virtual Account BCA, kode QRIS, nomor E-Wallet (`0852-6378-5531`), atau instruksi COD. Pengguna dapat mengupload foto bukti bayar (opsional) lalu menekan tombol **Konfirmasi & Selesaikan Pembayaran Sekarang** (`CheckoutController@processPayment`), sehingga status transaksi berubah dari `pending` menjadi **`paid` (LUNAS)**.
+6. **Bukti Transaksi & Invoice Lunas (`/checkout/success/{invoiceNumber}`)**  
+   Menampilkan halaman **Invoice Resmi** berstatus **LUNAS** (lengkap dengan waktu pembayaran `paid_at` dan lampiran bukti bayar) yang bisa dicetak atau dikonfirmasi langsung ke WhatsApp Admin (`0852-6378-5531`), serta dapat dipantau kapan saja di halaman **Riwayat Pesanan & Pembayaran (`/pesanan-saya`)**.
 
 ---
 
@@ -81,11 +83,21 @@ Dokumen ini menjelaskan struktur folder, lokasi file kodingan per halaman, serta
 
 ---
 
-### F. Halaman 5: Bukti Pemesanan / Invoice (`/checkout/success/{invoiceNumber}`)
-- **File Tampilan (View):** `resources/views/checkout/success.blade.php`
-- **File Logika (Controller):** `app/Http/Controllers/CheckoutController.php` (method `success`)
+### F. Halaman 5: Proses Pembayaran Online (`/pembayaran/{invoiceNumber}`)
+- **File Tampilan (View):** `resources/views/checkout/payment.blade.php`
+- **File Logika (Controller):** `app/Http/Controllers/CheckoutController.php` (method `payment` dan `processPayment`)
 - **Penjelasan Singkat:**  
-  Menampilkan nomor invoice resmi (`INV-STRK-...`), instruksi pembayaran, rincian alamat & ekspedisi, daftar barang yang dibeli, tombol **Cetak Invoice**, serta tombol **Konfirmasi via WhatsApp CS** yang otomatis mengarah ke nomor WhatsApp Admin (`0852-6378-5531`) dengan format pesan pesanan lengkap.
+  Menampilkan instruksi pembayaran interaktif (Virtual Account BCA, Scan Kode QRIS, E-Wallet `0852-6378-5531`, atau COD) beserta form upload bukti bayar (`payment_proof`). Saat pengguna menekan **Konfirmasi & Selesaikan Pembayaran Sekarang**, method `processPayment()` memperbarui status tabel `transactions` menjadi `paid` (Lunas), mencatat waktu `paid_at`, dan mengubah status `orders` menjadi `confirmed`.
+
+---
+
+### G. Halaman 6: Bukti Pemesanan / Invoice Lunas (`/checkout/success/{invoiceNumber}`) & Riwayat Pesanan (`/pesanan-saya`)
+- **File Tampilan (View):**
+  - Invoice: `resources/views/checkout/success.blade.php`
+  - Riwayat Pesanan: `resources/views/checkout/orders.blade.php`
+- **File Logika (Controller):** `app/Http/Controllers/CheckoutController.php` (method `success` dan `myOrders`)
+- **Penjelasan Singkat:**  
+  Menampilkan nomor invoice resmi (`INV-STRK-...`), status pembayaran (**LUNAS / BELUM DIBAYAR**), bukti transfer yang diupload, rincian alamat & ekspedisi, daftar barang yang dibeli, tombol **Cetak Invoice**, serta tombol **Konfirmasi via WhatsApp Admin** (`0852-6378-5531`).
 
 ---
 

@@ -33,12 +33,15 @@ Route::get('/kategori/{category:slug}', [CatalogController::class, 'category'])-
 // 4. Halaman Detail Produk
 Route::get('/produk/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 
-// 5. Halaman Keranjang Belanja & Checkout (Checkout wajib login)
+// 5. Halaman Keranjang Belanja, Checkout, & Pembayaran Online (Checkout & Pembayaran wajib login)
 Route::get('/keranjang', [CartController::class, 'page'])->name('cart.page');
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/pembayaran/{invoiceNumber}', [CheckoutController::class, 'payment'])->name('checkout.payment');
+    Route::post('/pembayaran/{invoiceNumber}', [CheckoutController::class, 'processPayment'])->name('checkout.payment.process');
     Route::get('/checkout/success/{invoiceNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/pesanan-saya', [CheckoutController::class, 'myOrders'])->name('orders.my');
 });
 
 // Cart Interactivity (Session-Backed)
