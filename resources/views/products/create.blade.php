@@ -26,7 +26,7 @@
         </div>
         <a 
             href="{{ route('products.index') }}" 
-            class="px-4 py-2.5 rounded-xl border border-emerald-700/80 bg-[#071C17] hover:bg-emerald-950 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm"
+            class="px-4 py-2.5 rounded-xl border border-emerald-700/80 bg-[#102D42] hover:bg-emerald-950 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm"
         >
             <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             <span>Kembali ke Daftar</span>
@@ -272,7 +272,7 @@
                 <div class="flex items-center gap-3">
                     <button 
                         type="submit" 
-                        class="flex-1 py-3 px-4 rounded-xl font-heading font-bold text-xs bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white shadow-lg shadow-emerald-950/20 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        class="flex-1 py-3 px-4 rounded-xl font-heading font-bold text-xs bg-gradient-to-r from-[#194668] to-[#194668] hover:from-[#194668] hover:to-[#C5804B] text-white shadow-lg shadow-emerald-950/20 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         <span>Simpan Produk</span>

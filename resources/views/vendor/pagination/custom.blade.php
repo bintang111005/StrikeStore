@@ -25,7 +25,7 @@
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
-                            <span class="w-9 h-9 rounded-xl bg-gradient-to-r from-[#064E3B] to-[#047857] text-white font-bold text-xs flex items-center justify-center shadow-md shadow-emerald-950/20" aria-current="page">{{ $page }}</span>
+                            <span class="w-9 h-9 rounded-xl bg-gradient-to-r from-[#194668] to-[#194668] text-white font-bold text-xs flex items-center justify-center shadow-md shadow-emerald-950/20" aria-current="page">{{ $page }}</span>
                         @else
                             <a href="{{ $url }}" class="w-9 h-9 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 font-semibold text-xs flex items-center justify-center transition-all shadow-sm">{{ $page }}</a>
                         @endif

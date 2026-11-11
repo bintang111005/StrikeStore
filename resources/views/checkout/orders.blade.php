@@ -16,7 +16,7 @@
                 Riwayat Pesanan & Pembayaran
             </h1>
         </div>
-        <a href="{{ route('catalog.index') }}" class="px-4 py-2.5 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white text-xs font-bold self-start sm:self-auto">
+        <a href="{{ route('catalog.index') }}" class="px-4 py-2.5 rounded-xl bg-[#194668] hover:bg-emerald-700 text-white text-xs font-bold self-start sm:self-auto">
             + Belanja Lagi
         </a>
     </div>
@@ -71,7 +71,7 @@
                                 @if (!$isPaid)
                                     <a 
                                         href="{{ route('checkout.payment', $order->invoice_number) }}" 
-                                        class="px-4 py-2 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white text-xs font-bold transition-colors"
+                                        class="px-4 py-2 rounded-xl bg-[#194668] hover:bg-emerald-700 text-white text-xs font-bold transition-colors"
                                     >
                                         Bayar Sekarang
                                     </a>
@@ -92,7 +92,7 @@
         <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center">
             <h2 class="font-heading font-bold text-lg text-slate-900">Belum Ada Riwayat Pesanan</h2>
             <p class="text-xs sm:text-sm text-slate-500 mt-1 mb-5">Anda belum memiliki transaksi pembelian. Yuk mulai pilih produk di katalog kami.</p>
-            <a href="{{ route('catalog.index') }}" class="inline-block px-5 py-2.5 rounded-xl bg-[#064E3B] text-white text-xs font-bold">
+            <a href="{{ route('catalog.index') }}" class="inline-block px-5 py-2.5 rounded-xl bg-[#194668] text-white text-xs font-bold">
                 Mulai Belanja
             </a>
         </div>

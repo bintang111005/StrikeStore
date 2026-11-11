@@ -34,7 +34,7 @@
             <a 
                 href="{{ route('catalog.index') }}" 
                 target="_blank"
-                class="px-4 py-2.5 rounded-xl border border-emerald-700/80 bg-[#071C17] hover:bg-emerald-950 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm"
+                class="px-4 py-2.5 rounded-xl border border-emerald-700/80 bg-[#102D42] hover:bg-emerald-950 text-slate-200 hover:text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm"
                 title="Buka Toko / Halaman Katalog Publik"
             >
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -42,7 +42,7 @@
             </a>
             <a 
                 href="{{ route('products.create') }}" 
-                class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-emerald-950/40 active:scale-95"
+                class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#194668] to-[#194668] hover:from-[#194668] hover:to-[#C5804B] text-white text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-emerald-950/40 active:scale-95"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                 <span>Tambah Produk Baru</span>
@@ -146,7 +146,7 @@
             <div class="flex items-center gap-2">
                 <button 
                     type="submit" 
-                    class="px-4 py-2.5 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 shadow-sm"
+                    class="px-4 py-2.5 rounded-xl bg-[#194668] hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 shadow-sm"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <span>Cari</span>
@@ -349,7 +349,7 @@
                 </a>
                 <a 
                     href="{{ route('products.create') }}" 
-                    class="px-5 py-2.5 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
+                    class="px-5 py-2.5 rounded-xl bg-[#194668] hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     <span>Tambah Produk Baru</span>

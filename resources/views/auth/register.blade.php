@@ -118,7 +118,7 @@
 
             <button 
                 type="submit" 
-                class="w-full py-3 px-4 rounded-xl font-heading font-bold text-sm bg-[#064E3B] hover:bg-emerald-700 text-white transition-colors cursor-pointer mt-2"
+                class="w-full py-3 px-4 rounded-xl font-heading font-bold text-sm bg-[#194668] hover:bg-emerald-700 text-white transition-colors cursor-pointer mt-2"
             >
                 Daftar & Masuk
             </button>

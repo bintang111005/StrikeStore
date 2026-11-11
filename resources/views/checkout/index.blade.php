@@ -28,7 +28,7 @@
                     <span>Pilih Produk</span>
                 </a>
                 <svg class="w-4 h-4 text-slate-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#064E3B] text-white shadow-sm">
+                <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#194668] text-white shadow-sm">
                     <span class="w-5 h-5 rounded-full bg-emerald-400 text-slate-950 font-extrabold flex items-center justify-center text-[11px]">2</span>
                     <span>Data Pemesanan</span>
                 </div>
@@ -141,7 +141,7 @@
                         <input type="hidden" name="product_id" value="{{ $prod->id }}">
                         <input type="hidden" name="quantity" value="1">
                         <input type="hidden" name="redirect_checkout" value="1">
-                        <button type="submit" class="px-2.5 py-1.5 rounded-xl bg-[#064E3B] hover:bg-emerald-600 text-white text-[11px] font-bold transition-colors cursor-pointer">
+                        <button type="submit" class="px-2.5 py-1.5 rounded-xl bg-[#194668] hover:bg-emerald-600 text-white text-[11px] font-bold transition-colors cursor-pointer">
                             + Pilih
                         </button>
                     </form>
@@ -162,7 +162,7 @@
                 <div class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-5">
                     <div class="flex items-center justify-between pb-4 border-b border-slate-100">
                         <div class="flex items-center gap-3">
-                            <span class="w-8 h-8 rounded-xl bg-[#064E3B] text-white font-heading font-bold text-sm flex items-center justify-center">
+                            <span class="w-8 h-8 rounded-xl bg-[#194668] text-white font-heading font-bold text-sm flex items-center justify-center">
                                 1
                             </span>
                             <div>
@@ -247,7 +247,7 @@
                 {{-- 2. METODE PENGIRIMAN / EKSPEDISI --}}
                 <div class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-4">
                     <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
-                        <span class="w-8 h-8 rounded-xl bg-[#064E3B] text-white font-heading font-bold text-sm flex items-center justify-center">
+                        <span class="w-8 h-8 rounded-xl bg-[#194668] text-white font-heading font-bold text-sm flex items-center justify-center">
                             2
                         </span>
                         <div>
@@ -314,7 +314,7 @@
                 {{-- 3. METODE PEMBAYARAN --}}
                 <div class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-sm space-y-4">
                     <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
-                        <span class="w-8 h-8 rounded-xl bg-[#064E3B] text-white font-heading font-bold text-sm flex items-center justify-center">
+                        <span class="w-8 h-8 rounded-xl bg-[#194668] text-white font-heading font-bold text-sm flex items-center justify-center">
                             3
                         </span>
                         <div>
@@ -464,7 +464,7 @@
                     <button 
                         type="submit" 
                         {{ count($selectedItems) === 0 ? 'disabled' : '' }}
-                        class="w-full py-4 px-6 rounded-xl font-heading font-bold text-sm bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white shadow-xl shadow-emerald-950/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                        class="w-full py-4 px-6 rounded-xl font-heading font-bold text-sm bg-gradient-to-r from-[#194668] to-[#194668] hover:from-[#194668] hover:to-[#C5804B] text-white shadow-xl shadow-emerald-950/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <span>Buat Pesanan Sekarang</span>

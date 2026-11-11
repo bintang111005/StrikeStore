@@ -29,7 +29,7 @@
             <span>Pembayaran</span>
         </div>
         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#064E3B] text-white shadow-sm">
+        <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#194668] text-white shadow-sm">
             <span class="w-4 h-4 rounded-full bg-emerald-400 text-slate-950 font-extrabold flex items-center justify-center text-[10px]">4</span>
             <span>Invoice Selesai</span>
         </div>
@@ -39,7 +39,7 @@
     <div class="bg-white rounded-3xl border border-slate-200/90 shadow-lg overflow-hidden">
         
         {{-- Top Banner --}}
-        <div class="bg-gradient-to-r from-[#022C22] via-[#064E3B] to-[#022C22] text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="bg-gradient-to-r from-[#102D42] via-[#194668] to-[#102D42] text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex flex-col sm:flex-row items-center gap-4">
                 <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/></svg>
@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-            <div class="bg-[#071C17]/80 border border-emerald-700/60 rounded-2xl px-4 py-3 text-center sm:text-right shrink-0">
+            <div class="bg-[#102D42]/80 border border-emerald-700/60 rounded-2xl px-4 py-3 text-center sm:text-right shrink-0">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">Nomor Invoice</span>
                 <span class="font-mono font-extrabold text-sm sm:text-base text-white tracking-wide">{{ $order->invoice_number }}</span>
                 <span class="text-[11px] text-slate-400 block mt-0.5">{{ $order->created_at->format('d M Y, H:i') }} WIB</span>
@@ -113,7 +113,7 @@
                     @if (!$isPaid)
                         <a 
                             href="{{ route('checkout.payment', $order->invoice_number) }}" 
-                            class="inline-block px-4 py-2 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors print:hidden"
+                            class="inline-block px-4 py-2 rounded-xl bg-[#194668] hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors print:hidden"
                         >
                             Bayar Sekarang →
                         </a>
@@ -303,7 +303,7 @@
                     @if (!$isPaid)
                         <a 
                             href="{{ route('checkout.payment', $order->invoice_number) }}" 
-                            class="flex-1 sm:flex-initial py-3.5 px-6 rounded-xl font-heading font-bold text-xs sm:text-sm bg-[#064E3B] hover:bg-emerald-700 text-white shadow-lg transition-all flex items-center justify-center gap-2"
+                            class="flex-1 sm:flex-initial py-3.5 px-6 rounded-xl font-heading font-bold text-xs sm:text-sm bg-[#194668] hover:bg-emerald-700 text-white shadow-lg transition-all flex items-center justify-center gap-2"
                         >
                             <span>Selesaikan Pembayaran Online</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -314,7 +314,7 @@
                         href="https://wa.me/6285263785531?text={{ $waText }}" 
                         target="_blank" 
                         rel="noopener"
-                        class="flex-1 sm:flex-initial py-3.5 px-6 rounded-xl font-heading font-bold text-xs sm:text-sm {{ $isPaid ? 'bg-[#064E3B] hover:bg-emerald-700 text-white shadow-lg' : 'border border-emerald-700 text-emerald-800 hover:bg-emerald-50' }} transition-all flex items-center justify-center gap-2"
+                        class="flex-1 sm:flex-initial py-3.5 px-6 rounded-xl font-heading font-bold text-xs sm:text-sm {{ $isPaid ? 'bg-[#194668] hover:bg-emerald-700 text-white shadow-lg' : 'border border-emerald-700 text-emerald-800 hover:bg-emerald-50' }} transition-all flex items-center justify-center gap-2"
                     >
                         <span>Konfirmasi via WhatsApp Admin</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>

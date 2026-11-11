@@ -28,7 +28,7 @@
                     <span>Data Pemesanan</span>
                 </span>
                 <svg class="w-4 h-4 text-slate-300 shrink-0 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                <div class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#064E3B] text-white shadow-sm">
+                <div class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#194668] text-white shadow-sm">
                     <span class="w-5 h-5 rounded-full bg-emerald-400 text-slate-950 font-extrabold flex items-center justify-center text-[11px]">3</span>
                     <span>Pembayaran</span>
                 </div>
@@ -62,7 +62,7 @@
                     <span>Pembayaran telah diterima pada {{ $order->transaction->paid_at?->format('d M Y, H:i') }} WIB.</span>
                 </div>
             </div>
-            <a href="{{ route('checkout.success', $order->invoice_number) }}" class="px-4 py-2 rounded-xl bg-[#064E3B] text-white text-xs font-bold shrink-0 text-center">
+            <a href="{{ route('checkout.success', $order->invoice_number) }}" class="px-4 py-2 rounded-xl bg-[#194668] text-white text-xs font-bold shrink-0 text-center">
                 Lihat Invoice Lunas →
             </a>
         </div>
@@ -295,7 +295,7 @@
 
                     <button 
                         type="submit" 
-                        class="w-full py-4 px-6 rounded-xl font-heading font-bold text-sm bg-[#064E3B] hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/15 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        class="w-full py-4 px-6 rounded-xl font-heading font-bold text-sm bg-[#194668] hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/15 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <span>Konfirmasi & Selesaikan Pembayaran Sekarang</span>

@@ -23,7 +23,7 @@
 
             {{-- Simple 3-Step Indicator --}}
             <div class="flex items-center gap-2 sm:gap-3 text-xs font-semibold">
-                <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#064E3B] text-white shadow-sm">
+                <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#194668] text-white shadow-sm">
                     <span class="w-5 h-5 rounded-full bg-emerald-400 text-slate-950 font-extrabold flex items-center justify-center text-[11px]">1</span>
                     <span>Pilih Produk</span>
                 </div>
@@ -302,7 +302,7 @@
                         <a 
                             href="{{ route('checkout.index') }}"
                             id="proceedCheckoutLink"
-                            class="w-full py-4 px-5 rounded-xl font-heading font-bold text-sm bg-gradient-to-r from-[#064E3B] to-[#047857] hover:from-[#047857] hover:to-[#10B981] text-white shadow-lg shadow-emerald-950/20 transition-all flex items-center justify-center gap-2 {{ $summary['selected_items'] <= 0 ? 'opacity-50 pointer-events-none' : '' }}"
+                            class="w-full py-4 px-5 rounded-xl font-heading font-bold text-sm bg-gradient-to-r from-[#194668] to-[#194668] hover:from-[#194668] hover:to-[#C5804B] text-white shadow-lg shadow-emerald-950/20 transition-all flex items-center justify-center gap-2 {{ $summary['selected_items'] <= 0 ? 'opacity-50 pointer-events-none' : '' }}"
                         >
                             <span>{{ Auth::check() ? 'Lanjut ke Data Pemesanan' : 'Login / Daftar untuk Checkout' }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -331,7 +331,7 @@
                 Anda belum memilih perlengkapan memancing. Pilih produk di bawah ini atau jelajahi katalog lengkap kami.
             </p>
             <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
-                <a href="{{ route('catalog.index') }}" class="px-6 py-3 rounded-xl bg-[#064E3B] hover:bg-emerald-700 text-white font-heading font-bold text-xs shadow-md transition-all">
+                <a href="{{ route('catalog.index') }}" class="px-6 py-3 rounded-xl bg-[#194668] hover:bg-emerald-700 text-white font-heading font-bold text-xs shadow-md transition-all">
                     Jelajahi Katalog Produk
                 </a>
                 <a href="#pilih-produk-cepat" class="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-heading font-bold text-xs transition-all">
@@ -398,7 +398,7 @@
                                 <input type="hidden" name="quantity" value="1">
                                 <button 
                                     type="submit" 
-                                    class="px-3 py-2 rounded-xl bg-[#064E3B] hover:bg-emerald-600 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-xs cursor-pointer"
+                                    class="px-3 py-2 rounded-xl bg-[#194668] hover:bg-emerald-600 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-xs cursor-pointer"
                                 >
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                                     <span>Pilih</span>
